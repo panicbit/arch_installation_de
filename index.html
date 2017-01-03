@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Arch Installation</title>
+
+		<meta name="description" content="">
+		<meta name="author" content="panicbit">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/league.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/monokai.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+	<div class="reveal">
+		<div class="slides">
+
+
+<!-- FOLIEN START -->
+
+
+
+<section data-markdown><script type='text/template'>
+    ![Arch Logo](img/arch_logo_dark.svg) <!-- .element: height="120" -->
+
+    ## <!-- .element: style="margin-top: 0.1rem" --> Installations-Guide
+
+    Erstellt von `panicbit` &nbsp;![panicbit avatar](img/panicbit.jpg) <!-- .element: width="75" style="vertical-align: middle;" -->
+
+    - Github: [github.com/panicbit](https://github.com/panicbit)
+    <!-- - Keybase: [keybase.io/panicbit](https://keybase.io/panicbit) -->
+    - Twitter: [@panicbit_dev](https://twitter.com/panicbit_dev)
+
+    Quelle: [Arch Linux Wiki](https://wiki.archlinux.org/index.php/)
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    # Vorbereitung
+
+    Im Folgenden:
+
+    1. <!-- .element: class="fragment" --> Download von Arch
+    2. <!-- .element: class="fragment" --> Vorbereiten eines USB-Sticks
+    3. <!-- .element: class="fragment" --> Booten ins Installationssystem
+
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ## ISO Download
+
+    https://www.archlinux.org/download/
+    
+    Abschnitt `HTTP Direct Downloads`
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ## Bootbaren USB-Stick erstellen
+
+    1. <!-- .element: class="fragment" --> `Unetbootin` herunterladen: https://unetbootin.github.io/
+    2. <!-- .element: class="fragment" --> Arch ISO als `Abbild` auswählen
+    3. <!-- .element: class="fragment" --> Ziel-`Laufwerk` auswählen
+    4. <!-- .element: class="fragment" --> `OK` drücken
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ## Installationssystem Booten
+
+    <!-- .element: class="fragment" --> Dieser Schritt hängt stark vom jeweiligen System ab.
+
+    <!-- .element: class="fragment" --> Hilfe benötigt?
+
+    <!-- .element: class="fragment" --> <video data-autoplay loop><source data-src='img/hilfe.mp4' type='video/mp4'></video>
+
+
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ## Deutsches Tastaturlayout laden
+
+    ```sh
+    loadkeys de-latin1
+    ```
+
+    Tastenfolge:
+
+    ```sh
+    loadkezs deßlatin1
+    ```
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    # Eine Internetverbindung herstellen
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ## LAN + DHCP?
+
+    <!-- .element: class="fragment" --> Automatisch!
+
+    <!-- .element: class="fragment"--> <video data-autoplay loop><source data-src='img/geek_dance.mp4' type='video/mp4'></video>
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ## LAN + Statische IP?
+
+    <!-- .element: class="fragment" --> Brauchen wir in der Uni nicht
+
+    <!-- .element: class="fragment" --> ![Trollface](img/trollface.png)
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ## Wlan?
+
+    <!-- .element: class="fragment" --> ![Es ist kompliziert...](img/wlan_kompliziert.png) 
+
+    <!-- .element: class="fragment" --> Während Installation der Einfachheit halber via LAN und DHCP.
+
+    <!-- .element: class="fragment" --> Nach Installation aber einfach via `NetworkManager`.
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    # Vorbereitung der Festplatte
+
+    ## <!-- .element: style="color: red" --> Wichtig:
+
+    ### <!-- .element: style="color: red" --> Die Festplatte wird bei diesem Prozess gelöscht!
+
+    Es wird außerdem angenommen, dass nur ***eine*** Festplatte im System existiert und diese vollständig für Arch verwendet werden soll.
+</script></section>
+
+
+<section data-markdown><script type='text/template'>
+    ## Partitionierung
+
+    ```sh
+    cfdisk -z
+    ```
+
+    Es muss nun das Format der Partitionstabelle gewählt werden.
+    Für neue `UEFI` Systemen wählt man `gpt`, für ältere Systeme `dos`.
+
+</script></section>
+
+
+<section data-markdown><script type='text/template'>
+    ### Nur auf UEFI Systemen: EFI Systempartition
+
+    Es muss eine 100-200 Mb große EFI Systempartition (kurz `ESP`) erstellt werden.
+
+    Dazu wählt man `[   New  ]` und gibt `200M` ein.
+    
+    Anschließend wählt man `[  Type  ]` und dann `EFI System` aus.
+
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ### Arch Partition
+
+    Nun wird mit `[   New  ]` eine neue Partition für das Arch System erstellt:
+
+    Es muss hier die Größe des `Swap`-Speichers abezogen werden.
+
+    - Möchte man später den Ruhezustand verwenden, dann zieht man mindestens `RAM_GROESSE` ab
+    - Andernfalls zieht man `round(sqrt(RAM_GROESSE))` ab
+
+    ***Nur auf BIOS Systemen:*** Die erstellte Partition muss nun noch als `[Bootable]` markiert werden.
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ### Swap Partition ###
+
+    Jetzt belegen wir den übrigen Speicher mit `[   New  ]`.
+
+    Danach ändern wir mit `[  Type  ]` den Typ zu `Linux swap`.
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ### Partitionierung abschließen
+
+    Zum Schluß `[  Write ]` auswählen und mit `yes` bestätigen um die Änderungen zu speichern.
+
+    Dann einfach mit `[  Quit  ]` beenden.
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ### Formatieren der Partitionen
+
+    EFI Partition (FAT32):
+
+    ```sh
+    mkfs.fat -F32 /dev/sda1
+    ```
+
+    Arch Partition (EXT4):
+
+    ```sh
+    mkfs.ext4 -L "Arch" /dev/sda2
+    ```
+
+    Swap Partition:
+
+    ```sh
+    mkswap /dev/sda3
+    ```
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    # Die eigentliche Installation
+
+    - Erstellte Partitionen einhängen
+    - Basis-System installieren
+    - Grundkonfiguration
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ## Partitionen einhängen
+
+    Arch Partition:
+
+    ```sh
+    mount /dev/sda2 /mnt
+    ```
+
+    Swap Partition:
+    ```
+    swapon /dev/sda3
+    ```
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ## Basis-System installieren
+
+    ```sh
+    pacstrap /mnt base
+    ```
+
+    <!-- .element: class="fragment" --> Und nun warten...
+
+    <!-- .element: class="fragment" --> ...oder Mate kaufen gehen.
+
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ![Timey Wimey](img/time.jpg)
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ### Einhängepunkte Generieren
+
+    ```sh
+    genfstab /mnt >> /mnt/etc/fstab
+    ```
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ## In das neue System wechseln
+
+    ```sh
+    arch-chroot /mnt bash
+    ```
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ## Name des Systems festlegen
+
+    ```sh
+    echo "maria" > /etc/hostname
+    ```
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ## Zeitzone festlegen
+
+    ```sh
+    ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime
+    ```
+
+    Überprüfen mit:
+
+    ```sh
+    date +%Z
+    ```
+
+    Ausgabe sollte `CET` anstatt `UTC` sein.
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ## Spracheinstellungen
+
+    In der Datei `/etc/locale.conf` müssen vor 5 Zeilen die Rauten und Leerzeichen entfernt werden:
+
+    ```
+    en_US ISO-8859-1
+    en_US.UTF-8 UTF-8
+    ```
+
+    und
+
+    ```
+    de_DE.UTF-8 UTF-8  
+    de_DE ISO-8859-1  
+    de_DE@euro ISO-8859-15
+    ```
+
+    Danach muss man `locale-gen` ausführen:
+
+    ```sh
+    locale-gen
+    ```
+
+    Systemweite Standardsprache festlegen:
+
+    ```sh
+    echo "LANG=de_DE.UTF-8" > /etc/locale.conf
+    ```
+
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ## Tastaturlayout der virtuellen Konsole
+
+    ```sh
+    echo "KEYMAP=de-latin1" > /etc/vconsole.conf
+    ```
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ## Password für `root` festlegen
+
+    ```sh
+    passwd
+    ```
+
+    Und dann das Password zweimal eingeben.
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ## Sudo installieren
+
+    ```sh
+    pacman -S sudo
+    ```
+
+    ## Konfiguration
+
+    ```sh
+    EDITOR=nano visudo
+    ```
+    
+    Es müssen Raute und Leerzeichen vor folgender Zeile entfernt werden:
+
+    ```
+    %wheel ALL=(ALL) ALL
+    ```
+
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ## Normalen Benutzer anlegen
+
+    ```sh
+    useradd -m -G wheel panicbit
+    ```
+
+    ## Passwort für den neuen Nutzer setzen
+
+    ```sh
+    passwd panicbit
+    ```
+
+    Und dann das Password zweimal eingeben.
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ## Bootloader installieren
+
+    ```sh
+    pacman -S grub
+    ```
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ## Nur für UEFI Systeme: Bootloader installieren
+
+    Tool installieren um der `UEFI` Firmware `GRUB` bekannt zu machen: 
+    ```sh
+    pacman -S efibootmgr
+    ```
+
+    ESP Einhängen:
+
+    ```sh
+    mount /dev/sda1 /mnt
+    ```
+
+    `GRUB` installieren
+    ```sh
+    grub-install --target=x86_64-efi --efi-directory=/mnt \
+     --bootloader-id=arch --recheck
+    ```
+
+    ```sh
+    grub-mkconfig -o /boot/grub/grub.cfg
+    ```
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ## Nur für BIOS Systeme: Bootloader installieren
+
+    ```sh
+    grub-install --recheck --target=i386-pc /dev/sda
+    ```
+
+    ```sh
+    grub-mkconfig -o /boot/grub/grub.cfg
+    ```
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ## NetworkManager installieren
+
+    ```sh
+    pacman -S networkmanager{,-pptp,-vpnc} network-manager-applet
+    ```
+
+    ```sh
+    systemctl enable NetworkManager
+    ```
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ## Neustarten!
+
+    ```sh
+    exit
+    ```
+
+    ```sh
+    reboot
+    ```
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ## Grafik einrichten
+
+    `X`-Server installieren
+
+    ```sh
+    sudo pacman -S xorg-server
+    ```
+
+    ### Für Intel Chips
+
+    ```sh
+    sudo pacman -S xf86-video-intel
+    ```
+
+    ### Für ATI Chips
+
+    ```sh
+    sudo pacman -S xf86-video-ati
+    ```
+
+    ### Für Nvidia Chips
+
+    ```sh
+    sudo pacman -S xf86-video-nouveau
+    ```
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ## Display-Manager / Login-Manager installieren (lightdm)
+
+    ```sh
+    sudo pacman -S lightdm{,-gtk-greeter}
+    ```
+
+    ```sh
+    sudo systemctl enable lightdm
+    ```
+</script></section>
+
+<section data-markdown data-noescape><script type='text/template'>
+    ## Deutsches X-Server Tastaturlayout
+
+    Als `/etc/X11/xorg.conf.d/20-keyboard.conf` anlegen:
+
+    <pre><code data-noescape data-trim>
+    Section "InputClass"
+    &nbsp;&nbsp;&nbsp;&nbsp;Identifier "keyboard"
+    &nbsp;&nbsp;&nbsp;&nbsp;MatchIsKeyboard "yes"
+    &nbsp;&nbsp;&nbsp;&nbsp;Option "XkbLayout" "de"
+    &nbsp;&nbsp;&nbsp;&nbsp;Option "XkbVariant" "nodeadkeys"
+    EndSection
+    </code></pre>
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ## Eine gute Schriftart muss her
+
+    ```sh
+    sudo pacman -S ttf-dejavu
+    ```
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ## Desktop-Session installieren (i3wm)
+
+    ```sh
+    sudo pacman -S i3 gnome-terminal dmenu
+    ```
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ## lightdm starten
+
+    ```sh
+    systemctl start lightdm
+    ```
+</script></section>
+
+<section data-markdown><script type='text/template'>
+    ## Primäre Ausgabe wählen
+
+    Name herausfinden via
+
+    ```sh
+    xrandr
+    ```
+
+    Häufig `HDMI-0` oder `VGA-0` o.ä.
+
+    In der `/etc/lightdm/lightdm.conf` im `[Seat:*]` Abschnitt eintragen:
+
+    ```sh
+    display-setup-script=xrandr --output VGA-0 --primary
+    ``` 
+</script></section>
+
+<!--
+<section data-markdown><script type='text/template'>
+
+</script></section>
+ -->
+
+<!--
+<section data-markdown><script type='text/template'>
+    # Wifi Reloaded
+
+</script></section>
+-->
+
+<!-- 
+<section data-markdown><script type='text/template'>
+    ## Zeitsynchronisierung aktivieren
+
+    ```sh
+    timedatectl set-ntp true
+    ```
+
+    Festlegung der Zeitserver möglich in `/etc/systemd/timesyncd.conf`
+</script></section>
+ -->
+
+<!--
+<section data-markdown><script type='text/template'>
+    ## Wlan Reloaded
+
+</script></section>
+ -->
+
+<!-- <section data-background='img/bye3.gif'>
+        <h1 style='color: white'>Ende</h1>
+</section> -->
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- FOLIEN ENDE -->
+
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: false,
+				progress: true,
+				history: true,
+				center: false,
+				slideNumber: true,
+
+				//parallaxBackgroundImage: 'img/parallax.png',
+				//parallaxBackgroundHorizontal: 200,
+
+				//touch: true,
+
+				transition: 'fade', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
